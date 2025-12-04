@@ -173,7 +173,7 @@ class IBoxs
         $request = $this->app['request'];
 
         // 获取视图根目录
-        if (strpos($template, '@')) {
+        if (str_contains($template, '@')) {
             // 跨模块调用
             list($app, $template) = explode('@', $template);
         }
@@ -195,11 +195,11 @@ class IBoxs
 
         $depr = $this->config['view_depr'];
 
-        if (0 !== strpos($template, '/')) {
+        if (false === str_starts_with($template, '/')) {
             $template   = str_replace(['/', ':'], $depr, $template);
             $controller = $request->controller();
 
-            if (strpos($controller, '.')) {
+            if (str_contains($controller, '.')) {
                 $pos        = strrpos($controller, '.');
                 $controller = substr($controller, 0, $pos) . '.' . Str::snake(substr($controller, $pos + 1));
             } else {
@@ -218,7 +218,7 @@ class IBoxs
                     }
 
                     $template = str_replace('.', DIRECTORY_SEPARATOR, $controller) . $depr . $template;
-                } elseif (false === strpos($template, $depr)) {
+                } elseif (false === str_contains($template, $depr)) {
                     $template = str_replace('.', DIRECTORY_SEPARATOR, $controller) . $depr . $template;
                 }
             }
